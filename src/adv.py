@@ -7,7 +7,7 @@ import time
 
 # Declare all the rooms
 
-rooms = {
+room = {
     "outside":  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
 
@@ -27,25 +27,25 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
-# Link rooms together
+# Link room together
 
-rooms["outside"].n_to = rooms["foyer"]
-rooms["foyer"].s_to = rooms["outside"]
-rooms["foyer"].n_to = rooms["overlook"]
-rooms["foyer"].e_to = rooms["narrow"]
-rooms["overlook"].s_to = rooms["foyer"]
-rooms["narrow"].w_to = rooms["foyer"]
-rooms["narrow"].n_to = rooms["treasure"]
-rooms["treasure"].s_to = rooms["narrow"]
+room["outside"].n_to = room["foyer"]
+room["foyer"].s_to = room["outside"]
+room["foyer"].n_to = room["overlook"]
+room["foyer"].e_to = room["narrow"]
+room["overlook"].s_to = room["foyer"]
+room["narrow"].w_to = room["foyer"]
+room["narrow"].n_to = room["treasure"]
+room["treasure"].s_to = room["narrow"]
 
 # Add items
 
-rooms["foyer"].items.append(Item("Flail", "A mace with a sharp ball attached by chain to the end."))
-rooms["foyer"].items.append(Item("Gold", "100 gold coins"))
-rooms["overlook"].items.append(Item("Quiver", "An empty quiver with a slightly magical hum."))
-rooms["outside"].items.append(Item("Bow", "A sturdy compound bow made of a fine material."))
+room["foyer"].items.append(Item("Flail", "A mace with a sharp ball attached by chain to the end."))
+room["foyer"].items.append(Item("Gold", "100 gold coins"))
+room["overlook"].items.append(Item("Quiver", "An empty quiver with a slightly magical hum."))
+room["outside"].items.append(Item("Bow", "A sturdy compound bow made of a fine material."))
 
-player_one = Player("Player One", rooms["outside"])
+player_one = Player("Player One", room["outside"])
 
 
 # Parsing
@@ -57,7 +57,7 @@ def parse_word(verb: str):
         if verb == direction.value:
             if player_one.can_move(direction):
                 player_one.move(direction)
-                print_location(True)
+                print_current_location(True)
             else:
                 print("You can not move in that direction currently. Type m to see your map")
             return
@@ -73,7 +73,7 @@ def parse_word(verb: str):
         else:
             print("You don't have any items in your inventory!")
     elif verb == "m" or verb == "map":
-        show_map()
+        display_map()
     else:
         print("""You must enter a valid command! 
 Use "n", "s", "e", or "w" to navigate.
@@ -102,7 +102,7 @@ def parse_words(verb: str, obj: str):
 
 # Printing
 
-def print_animated(string: str):
+def print_slowly(string: str):
     string += "\n"
     for char in string:
         print(char, end="", flush=True)
@@ -111,11 +111,11 @@ def print_animated(string: str):
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
-def print_location(animated: bool):
+def print_current_location(animated: bool):
     clear_screen()
     print(f"{player_one.current_room.name}".center(50, "-") + "\n")
     if animated:
-        print_animated(player_one.current_room.description)
+        print_slowly(player_one.current_room.description)
     else:
         print(player_one.current_room.description)
 
@@ -124,16 +124,16 @@ def print_location(animated: bool):
         for item in player_one.current_room.items:
             print(f"* {item.name}: {item.description}")
 
-def show_map():
+def display_map():
     clear_screen()
     
-    nothing = "Nothing this way"
+    nothing = "No visible path"
     north = player_one.current_room.n_to.name if player_one.current_room.n_to is not None else nothing
     south = player_one.current_room.s_to.name if player_one.current_room.s_to is not None else nothing
     west = player_one.current_room.w_to.name if player_one.current_room.w_to is not None else nothing
     east = player_one.current_room.e_to.name if player_one.current_room.e_to is not None else nothing
 
-    print("MAP".center(50, " "))
+    print("Your Map".center(50, " "))
     print("".center(50, "="))
 
     print("\n" + north.center(50, " "))
@@ -148,14 +148,14 @@ def show_map():
 
     print("\n" + "".center(50, "="))
 
-    input("\nPress enter key to continue")
-    print_location(False)
+    input("\nTap Return to Continue")
+    print_current_location(False)
 
 #
 # Main
 #
 
-print_location(True)
+print_current_location(True)
 
 while True:
 
