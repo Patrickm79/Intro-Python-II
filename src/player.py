@@ -40,7 +40,6 @@ class Player:
             self.max_hp += 10
             self.stats +=3
 
-
     def stats(self):
         return f'''
         level: {self.lvl}
