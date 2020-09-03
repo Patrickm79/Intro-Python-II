@@ -65,6 +65,7 @@ def parse_word(verb: str):
     if verb == "q":
         print("Thanks for playing!")
         exit()
+
     elif verb == "i" or verb == "inventory":
         if len(player_one.inventory) > 0:
             print("Inventory:")
@@ -72,8 +73,10 @@ def parse_word(verb: str):
                 print(f"* {item.name}")
         else:
             print("You don't have any items in your inventory!")
+
     elif verb == "m" or verb == "map":
         display_map()
+
     else:
         print("""You must enter a valid command! 
 Use "n", "s", "e", or "w" to navigate.
@@ -90,12 +93,14 @@ def parse_words(verb: str, obj: str):
                 player_one.take(item)
                 return
         print("There are no items in the room by that name")
+
     elif verb == "drop":
         for item in player_one.inventory:
             if obj == item.name.lower():
                 player_one.drop(item)
                 return
         print("You don't have any items in your inventory by that name")
+        
     else:
         print("You must enter a valid command! Accepted verbs are get, take, and drop")
 

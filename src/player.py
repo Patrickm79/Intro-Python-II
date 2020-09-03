@@ -43,8 +43,8 @@ class Player:
     def stats(self):
         return f'''
         level: {self.lvl}
-        experience points: {self.exp}
-        strenght: {self.strength}
+        experience: {self.exp}
+        strength: {self.strength}
         defense: {self.defense}
         magic: {self.magic}
         HP: {self.max_hp}
